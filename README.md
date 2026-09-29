@@ -11,6 +11,8 @@
 - [学习目标与节奏](#学习目标与节奏)
 - [12 周总览](#12-周总览)
 - [路径设计说明](#路径设计说明)
+- [GitHub 参考路线与对标](#github-参考路线与对标)
+  - [对标仓库清单（维护表）](#对标仓库清单维护表)
 - [分周计划（Week 1–12）](#week-1生成式-ai-与-prompt-engineering)
 - [毕业项目与周交付映射](#毕业项目与周交付映射)
 - [学习优先级与时间分配](#学习优先级与时间分配)
@@ -105,8 +107,9 @@ flowchart LR
 1. 阅读当周**必做**课程（选做留到有余力或第二遍）
 2. 跑通官方示例 → 改成本周作业目录下的代码
 3. 写清 `weekNN-*/README.md`：怎么跑、依赖、已知问题
-4. 用当周**验收标准**自测；RAG 相关周更新测试问题集
-5. Git 提交到对应周目录（不提交密钥与原始敏感数据）
+4. 提交 **`RESULTS.md`**（借鉴 [agent-prep](https://github.com/shaneliuyx/agent-prep)）：关键数字与结论，避免「感觉学会了」——例如 RAG 通过率、P95 延迟、召回样例、微调前后对比表
+5. 用当周**验收标准**自测；RAG 相关周更新测试问题集
+6. Git 提交到对应周目录（不提交密钥与原始敏感数据）
 
 ---
 
@@ -157,6 +160,107 @@ flowchart LR
    - RAG 文档源：Unity Catalog 表说明、Job 说明、内部 Markdown  
    - 评估与追踪：MLflow Tracing / GenAI Evaluate（有 workspace 时替代部分手写评估表）  
    - MCP：表搜索、Job 运行状态、血缘查询与 Week 11 作业对齐  
+
+8. **可观测性不要拖到毕业周**  
+   Week 8 起在 API 层记录 trace id；选修接入 [Phoenix](https://github.com/Arize-ai/phoenix) 或 [Langfuse](https://langfuse.com/docs)，与 [LLM Zoomcamp 2026](https://github.com/DataTalksClub/docs/blob/main/courses/llm-zoomcamp/whats-new.md) 的 Evaluation + Monitoring 模块对齐。
+
+---
+
+## GitHub 参考路线与对标
+
+网上有不少开源「AI / LLM 工程师」路线。本仓库的定位是：**12 周、数据平台场景、单一技术栈（Qdrant + LangGraph + MCP）**。对标仓库以 **[对标仓库清单（维护表）](#对标仓库清单维护表)** 为唯一列表来源；下文映射与选修仅说明**如何用**，新增/下线仓库时只改维护表即可。
+
+### 对标仓库清单（维护表）
+
+> **维护约定：** 发现新的路线、lab 或官方课仓库时，在对应分类下**追加一行**（勿删历史行，可标 `状态：归档`）。大版本课纲变更在「备注」写年份（如 Zoomcamp 2026）。本表上次整理：**2026-09**。
+
+#### 路线图与课表（curriculum）
+
+| 仓库 | 链接 | 周期 | 状态 | 在本计划中的用途 |
+|---|---|---|:---:|---|
+| mlabonne/llm-course | https://github.com/mlabonne/llm-course | 自学 | 活跃 | **LLM Engineer** 线；W5–7 原理与部署索引 |
+| DataTalksClub/llm-zoomcamp | https://github.com/DataTalksClub/llm-zoomcamp | ~10 周 | 活跃 | 作业与毕业 rubric；W3–4 向量检索、W8 评估/监控 |
+| DataTalksClub/docs（llm-zoomcamp） | https://github.com/DataTalksClub/docs/tree/main/courses/llm-zoomcamp | 文档 | 活跃 | 2026 课纲、环境、项目说明（whats-new） |
+| abhishekdubey331/AI-Engineer-RoadMap | https://github.com/abhishekdubey331/AI-Engineer-RoadMap | 16 周 | 活跃 | 按日粒度参考；W9–12 Agent eval / capstone 思路 |
+| tal7aouy/LLM-Engineering | https://github.com/tal7aouy/LLM-Engineering | 24 周 | 活跃 | 百科索引；W7 推理部署、W11 MCP 深读 |
+| seshakiran/learn-ai-in-12-weeks | https://github.com/seshakiran/learn-ai-in-12-weeks | 12 周 | 活跃 | W9 安全、失败注入与 adversarial 测试对标 |
+
+#### 实测 Lab 与专题仓库
+
+| 仓库 | 链接 | 周期 | 状态 | 在本计划中的用途 |
+|---|---|---|:---:|---|
+| shaneliuyx/agent-prep | https://github.com/shaneliuyx/agent-prep | 12 周 lab | 活跃 | 每周 `RESULTS.md` 范式；RAGAS / HyDE / Agentic RAG lab |
+| shaneliuyx/agent-development-curriculum | https://github.com/shaneliuyx/agent-development-curriculum | 12 周 | 活跃 | agent-prep 配套正文；选修 rerank、GraphRAG 章节 |
+| aarunbhardwaj/rag-engineering | https://github.com/aarunbhardwaj/rag-engineering | 分 Stage | 活跃 | W2/4/8 **选修** notebook（Naive→生产 RAG） |
+
+#### 官方开源课程（本计划主课引用）
+
+| 仓库 | 链接 | 状态 | 在本计划中的用途 |
+|---|---|:---:|---|
+| microsoft/generative-ai-for-beginners | https://github.com/microsoft/generative-ai-for-beginners | 活跃 | **W1–2** Prompt、RAG 入门 |
+| microsoft/ai-agents-for-beginners | https://github.com/microsoft/ai-agents-for-beginners | 活跃 | **W9** Agent、Tool、Agentic RAG |
+| openai/openai-cookbook | https://github.com/openai/openai-cookbook | 活跃 | **W2** Embedding、向量检索示例 |
+
+#### 框架、工具与可观测（非完整课表，按周查阅）
+
+| 仓库 / 项目 | 链接 | 状态 | 在本计划中的用途 |
+|---|---|:---:|---|
+| langchain-ai/langchain | https://github.com/langchain-ai/langchain | 活跃 | W3+ RAG 组件 |
+| langchain-ai/langgraph | https://github.com/langchain-ai/langgraph | 活跃 | W10、W12 Agent 图 |
+| qdrant/qdrant | https://github.com/qdrant/qdrant | 活跃 | W3–4、W8 向量库 |
+| hiyouga/LLaMA-Factory | https://github.com/hiyouga/LLaMA-Factory | 活跃 | W6 微调 |
+| ollama/ollama | https://github.com/ollama/ollama | 活跃 | W7 本地推理 |
+| vllm-project/vllm | https://github.com/vllm-project/vllm | 活跃 | W7 服务化（有 GPU） |
+| modelcontextprotocol/servers | https://github.com/modelcontextprotocol/servers | 活跃 | W11 官方 MCP Server 示例 |
+| Arize-ai/phoenix | https://github.com/Arize-ai/phoenix | 活跃 | W8 选修 RAG trace / 评估 UI |
+| langfuse/langfuse | https://github.com/langfuse/langfuse | 活跃 | W8–12 选修 LLM 可观测与评测 |
+| databricks/mlflow（GenAI） | https://github.com/mlflow/mlflow | 活跃 | 选修：Tracing / Evaluate（有 Databricks 时） |
+
+### 与本计划周次映射（主课 + 推荐选修）
+
+| 本计划 | 主线已覆盖 | 建议从 GitHub 补充 |
+|:---:|---|---|
+| W1–2 | MS GenAI + RAG 原型 | Zoomcamp Module 1（Agentic RAG 概念可先浏览，不抢先实现） |
+| W3–4 | LangChain + Qdrant | Zoomcamp Module 2 向量检索；rag-engineering Stage 1–3 任选一 notebook |
+| W5–7 | Transformer + LoRA + 部署 | mlabonne **LLM Engineer** §1 Running LLMs、§6 Deploying |
+| W8 | 企业 RAG + Ragas | agent-prep `lab-03-rag-eval`；Zoomcamp Module 4–5 评估与监控 |
+| W9–10 | Agent + LangGraph | agent-prep ReAct / 多 Agent 拓扑 lab；AI-Engineer-RoadMap Week 13–14 |
+| W11–12 | MCP + Copilot | Zoomcamp Module 3 编排（Kestra）**或** 用 Airflow 编排 ingestion（更贴 DE） |
+
+### 与 2026 行业路线的差异（刻意选择）
+
+| 话题 | 常见开源路线 | 本计划选择 | 理由 |
+|---|---|---|---|
+| 向量库 | PGVector / Chroma / minsearch | **Qdrant** | 与 Hybrid、Payload 过滤、生产部署练习一致 |
+| 编排 | Kestra / Temporal | **代码 + 可选 Airflow** | 对齐现有数据平台技能 |
+| 第一课 | Agentic RAG 先行（Zoomcamp 2026） | **先 Prompt + 经典 RAG** | DE 先建立检索与评测再上 Agent，失败面更小 |
+| Capstone | 通用 RAG App / SWE-bench | **Data Engineer Copilot** | 作品集与岗位叙事一致 |
+| 微调 | 16 周路线常占 2 周+ | **1 周选修加深** | 应用岗优先级低于 RAG / Agent / MCP |
+
+### 选修周（时间充裕时插入，不改周编号）
+
+在对应主线周**之后**加 3–6 小时即可，目录建议 `weekNN-extra-<topic>/`：
+
+| 选修 | 参考来源 | 建议插入点 | 产出 |
+|---|---|---|---|
+| Rerank + 上下文压缩 | agent-development-curriculum Week 2 | W4 后 | `RESULTS.md`：有无 rerank 的命中率对比 |
+| HyDE / Multi-Query | agent-prep RAG eval lab | W3 后 | 同一评测集上 A/B |
+| GraphRAG | rag-engineering NB 08；curriculum Week 2.5 | W8 前 | 多跳问答 5 题对比向量基线 |
+| Agentic RAG / CRAG | agent-prep Week 3.7 | W9 前 | 与 Week 8 单遍检索对比 faithfulness |
+| Agent 评估 + OTel | AI-Engineer-RoadMap W15；Zoomcamp Monitoring | W10 后 | 坏例集 + trace 截图写入 `RESULTS.md` |
+
+### 能力自检（招聘向六域，摘自 agent 课程 rubric 的简化版）
+
+完成 12 周后可用下表自评「是否有**可展示 artifact**」，而不只是看过文档：
+
+| 域 | 本计划主要周次 | 你应能拿出的证据 |
+|---|---|---|
+| RAG 与检索 | 2–4, 8 | 评测集 + Hybrid/Rerank + `RESULTS.md` |
+| Agent / 工具 / 编排 | 9–10, 12 | LangGraph 图 + 审批 + 工具审计日志 |
+| 评估与可观测 | 3, 8, 12 | Ragas 或规则评估；请求/trace 日志 |
+| 推理与部署 | 7 | 压测表 + OpenAI 兼容端点 |
+| 微调（可选） | 6 | 前后对比 + `train_config.yaml` |
+| 平台集成 | 11–12 | 自研 MCP + 安全设计文档 |
 
 ---
 
@@ -436,10 +540,12 @@ Document → Loader → Splitter → Chunks → Embeddings → Vector Store
 1. 知识库：Airflow、Databricks、Spark、规范、脱敏 Runbook（与前几周语料合并治理）。
 2. Dense + Filter + Hybrid + Rerank + 引用 + **无资料拒答**。
 3. 评测 ≥30 题：来源命中、忠实度、相关性（Ragas 或规则表）；结果存档 `evaluation/`。
+4. **选修：** 用 Phoenix / Langfuse / MLflow Tracing 记录至少一次完整 RAG 请求链路（对标 Zoomcamp Monitoring）。
 
 ### 交付物
 
 - `week08-enterprise-rag/ingestion/` · `retrieval/` · `evaluation/` · `api/`
+- `week08-enterprise-rag/RESULTS.md`（通过率、典型失败 case、P95 延迟）
 - `week08-enterprise-rag/ui/`（可选 Streamlit）
 - `week08-enterprise-rag/docker-compose.yml`
 
@@ -695,19 +801,22 @@ Python + FastAPI + LangChain + LangGraph + Qdrant + OpenAI/Ollama + MCP + Docker
 
 ## 官方资源收藏
 
+**GitHub 对标与课表仓库**统一见上文 [对标仓库清单（维护表）](#对标仓库清单维护表)。以下为**非 GitHub 或文档站**补充链接，避免与维护表重复。
+
+### 课程与文档（站点）
+
 | 类别 | 资源 |
 |---|---|
-| 生成式 AI | [Microsoft Generative AI for Beginners](https://microsoft.github.io/generative-ai-for-beginners/) |
-| AI Agent | [Microsoft AI Agents for Beginners](https://microsoft.github.io/ai-agents-for-beginners/) |
-| LLM 路线 | [LLM Course](https://github.com/mlabonne/llm-course) |
-| RAG 课程 | [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp) |
+| 生成式 AI（站点） | [Microsoft Generative AI for Beginners](https://microsoft.github.io/generative-ai-for-beginners/)（仓库见维护表） |
+| AI Agent（站点） | [Microsoft AI Agents for Beginners](https://microsoft.github.io/ai-agents-for-beginners/)（仓库见维护表） |
 | LangChain / LangGraph | [LangChain Docs](https://docs.langchain.com/) · [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) |
 | LlamaIndex / Ragas | [LlamaIndex](https://docs.llamaindex.ai/) · [Ragas](https://docs.ragas.io/) |
-| 向量库 | [Qdrant](https://qdrant.tech/documentation/) |
-| 微调 | [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) · [PEFT](https://huggingface.co/docs/peft/index) |
-| 推理 | [Ollama](https://github.com/ollama/ollama) · [vLLM](https://docs.vllm.ai/) |
+| 向量库文档 | [Qdrant Documentation](https://qdrant.tech/documentation/)（服务端仓库见维护表） |
+| 微调文档 | [PEFT](https://huggingface.co/docs/peft/index)（LLaMA-Factory 见维护表） |
+| 推理文档 | [vLLM Docs](https://docs.vllm.ai/)（Ollama / vLLM 仓库见维护表） |
 | 多 Agent 对比 | [AutoGen](https://microsoft.github.io/autogen/) · [CrewAI](https://docs.crewai.com/) |
-| MCP | [modelcontextprotocol.io](https://modelcontextprotocol.io/) · [Official Servers](https://github.com/modelcontextprotocol/servers) |
+| MCP 协议 | [modelcontextprotocol.io](https://modelcontextprotocol.io/)（官方 servers 见维护表） |
+| 可观测（文档） | [Langfuse Docs](https://langfuse.com/docs) · [Phoenix](https://arize.com/docs/phoenix) |
 
 ---
 

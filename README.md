@@ -1,6 +1,6 @@
-# AI Data / Platform Engineer 12 周学习路线
+# AI Engineer 12 周学习路线
 
-> 面向具备 **Python、SQL、Spark、Airflow、Databricks** 经验的数据工程师，目标岗位为 **AI Data Engineer** 与 **AI Platform Engineer**：从「会用 API」到「能交付可运维的 Data Platform Copilot」。
+> 面向具备 **Python、SQL、Spark、Airflow、Databricks** 经验的数据工程师，目标是从「会用 API」到「能交付可运维的 Data Platform Copilot」。
 >
 > **主线能力：** 生成式 AI 基础 → RAG 与评估 → 向量库工程化 →（原理与部署）→ 企业级 RAG → Agent / LangGraph → MCP → 综合项目
 
@@ -18,7 +18,7 @@
 - [学习优先级与时间分配](#学习优先级与时间分配)
 - [每周复盘模板](#每周复盘模板)
 - [官方资源收藏](#官方资源收藏)
-- [视频资源（按周）](#视频资源按周)
+- [AI 数据治理](#ai-数据治理)
 - [职业能力路径](#职业能力路径)
 
 ---
@@ -40,7 +40,7 @@
 - Python 3.11+，推荐 `uv` 或 `poetry` 管理虚拟环境
 - Docker Desktop（Week 4 起 Qdrant；Week 12 Compose 全栈）
 - 至少一种 LLM 访问方式：**OpenAI / Azure OpenAI API**，或本机 **Ollama**（Week 7 前备好）
-- 可选 GPU：**选修** LoRA/PEFT（`week06-extra-finetuning/`）、Week 7 **选修** Ollama/vLLM；无 GPU 可走托管 API + 文档中的**选修路径**
+- 可选 GPU：Week 6 微调、Week 7 vLLM；无 GPU 可走文档中的**选修路径**
 - 本仓库约定：每周代码放在 `weekNN-<topic>/`，根目录不放密钥
 
 ### 与现有工作的衔接
@@ -53,32 +53,32 @@
 
 ```mermaid
 flowchart LR
-  subgraph P1["阶段一：AI 检索基础（W1–4）"]
+  subgraph P1["阶段一：能用模型（W1–2）"]
     A1[Prompt 与 API]
-    A2[Embedding 与 RAG]
-    A3[评测集与回归测试]
-    A4[Qdrant 与 Hybrid Search]
+    A2[Embedding 与 RAG 原型]
   end
-  subgraph P2["阶段二：AI 数据平台（W5–8）"]
-    B1[LLM 原理速通]
-    B2[AI Data Pipeline]
-    B3[Model Serving 与 Databricks AI]
-    B4[企业级 RAG + 可观测]
+  subgraph P2["阶段二：能建系统（W3–8）"]
+    B1[LangChain 流水线]
+    B2[Qdrant 生产化]
+    B3[原理 / 微调 / 部署]
+    B4[企业 RAG + 评估]
   end
-  subgraph P3["阶段三：平台智能化（W9–12）"]
+  subgraph P3["阶段三：能连平台（W9–12）"]
     C1[Tool Agent]
-    C2[LangGraph 工作流]
-    C3[MCP + Metadata + Lineage]
-    C4[AI Data Platform Copilot]
+    C2[LangGraph 多角色]
+    C3[MCP]
+    C4[Copilot 毕业项目]
   end
   P1 --> P2 --> P3
 ```
 
 | 阶段 | 周次 | 结束时你能演示什么 |
-|---|---:|---|
-| 一 | 1–4 | 带引用的多格式 RAG、1k+ 切片、Hybrid Search、可重复运行的评测集 |
-| 二 | 5–8 | 增量知识入湖与向量化流水线、模型服务、Databricks AI 对齐、可观测企业 RAG |
-| 三 | 9–12 | 多工具 Agent、审批流、元数据/血缘 MCP、Compose 一键启动的 AI Data Platform Copilot |
+|---|---|---|
+| 一 | 1–2 | 3 个 Prompt 小工具 + 带引用的 PDF/文档问答 |
+| 二 | 3–8 | Qdrant 上 1k+ 切片、可评估的企业知识库 API（Copilot V1） |
+| 三 | 9–12 | 多工具 Agent、审批流、MCP 接 GitHub/文件/数据平台、Compose 一键启动 |
+
+---
 
 ## 学习目标与节奏
 
@@ -89,10 +89,11 @@ flowchart LR
 - 独立构建**可评估**、带来源引用的 RAG 知识库（含 Hybrid / Rerank / 拒答）
 - 使用 **Qdrant** 做语义检索、Payload 过滤与混合检索
 - 使用 **Ollama** 或 **vLLM** 提供推理服务，并做基础压测
-- **选修：** 读懂 SFT、LoRA、QLoRA 与 PEFT 配置（`week06-extra-finetuning/` 完成一次短训或前后对比表即可）
+- 理解 SFT、LoRA、QLoRA（至少完成一次小规模实验或读懂训练配置）
 - 使用 **LangGraph** 组织 Agent 与多 Agent 工作流（AutoGen / CrewAI 作对比阅读）
 - 使用 **MCP** 连接文件系统、GitHub 与数据平台类工具
-- 交付一个可部署的 **AI Data Platform Copilot**（含日志与测试）
+- 建立 AI 数据治理能力：知识、Chunk、Embedding、向量索引、权限、评估、Agent 与生命周期治理
+- 交付一个可部署的 **Data Engineer Copilot**（含日志、测试、治理与审计）
 
 ### 建议投入
 
@@ -118,20 +119,22 @@ flowchart LR
 
 | 周 | 阶段 | 主题 | 必做交付 | 学时（参考） |
 |---:|---|---|---|---:|
-| 1 | 一 | LLM、Prompt 与结构化输出 | API 客户端 + 3 个数据工程助手 | 10–12 |
-| 2 | 一 | Embedding、搜索与 RAG 入门 | 多格式 RAG + Chunk 实验 | 12–15 |
-| 3 | 一 | RAG 工程化与评估基线 | Airflow 文档助手 + 20 题 Ground Truth | 12–15 |
-| 4 | 一 | Qdrant、Hybrid 与向量数据运维 | 1k+ Chunks + Filter + Hybrid + 备份验证 | 10–12 |
-| 5 | 二 | LLM 原理速通与 AI 数据边界 | 原理说明 + 模型/RAG/微调选型决策表 | 5–7 |
-| 6 | 二 | AI Data Pipeline | 增量知识摄取、质量校验、Embedding 与索引流水线 | 14–16 |
-| 7 | 二 | Model Serving 与 Databricks AI | 模型端点压测 + Databricks AI 方案映射 | 12–15 |
-| 8 | 二 | 企业级 RAG、评估与可观测 | Copilot V1 + 30 题评估 + Trace | 15–18 |
-| 9 | 三 | Agent 基础与安全工具调用 | 多工具 + 只读访问 + 审计日志 | 12–14 |
-| 10 | 三 | LangGraph 工作流 | Data Engineer 多节点图 + Human-in-the-loop | 14–16 |
-| 11 | 三 | MCP、Metadata 与 Lineage | Data Catalog MCP + 表/Schema/血缘/Job 状态 | 14–16 |
-| 12 | 三 | AI Data Platform Copilot | 可部署毕业项目 + 测试 + 评估报告 | 18–24 |
+| 1 | 一 | LLM 与 Prompt | API 客户端 + 3 个助手 | 10–12 |
+| 2 | 一 | Embedding 与 RAG 入门 | 多格式 RAG + Chunk 实验 | 12–15 |
+| 3 | 二 | LangChain 与 RAG 工程化 | Airflow 文档助手（**接 Qdrant**） | 12–15 |
+| 4 | 二 | Qdrant 向量库 | 1k+ Chunks、Filter、Hybrid | 10–12 |
+| 5 | 二 | Transformer 原理 | 架构图 + Attention 代码 | 8–10 |
+| 6 | 二 | LoRA 微调 | SQL 微调对比（**无 GPU 可选修**） | 10–15 |
+| 7 | 二 | 模型部署 | Ollama / vLLM + 压测 | 10–12 |
+| 8 | 二 | 企业级 RAG | Copilot V1 + Ragas 评估 | 15–18 |
+| 9 | 三 | Agent 基础 | 多工具 + 护栏 | 12–14 |
+| 10 | 三 | LangGraph | Data Engineer 多节点图 | 14–16 |
+| 11 | 三 | MCP + AI 数据治理 | Data Catalog MCP + 治理清单 + 安全设计 | 14–16 |
+| 12 | 三 | 毕业项目 | Data Engineer Copilot | 18–24 |
 
-**核心课程来源：** Microsoft GenAI / OpenAI Cookbook → LangChain + LLM Zoomcamp → Qdrant → Databricks AI / MLflow → LlamaIndex / Ragas → Microsoft AI Agents → LangGraph → MCP 官方文档。
+**核心课程来源（按周查阅详情）：** Microsoft GenAI / OpenAI Cookbook → LangChain + LLM Zoomcamp → Qdrant → LLM Course → LLaMA-Factory → Ollama/vLLM → LlamaIndex/Ragas → Microsoft AI Agents → LangGraph → MCP 官方文档。
+
+---
 
 ## 路径设计说明
 
@@ -141,13 +144,13 @@ flowchart LR
    不要在 Week 3 用临时内存向量库再在 Week 4 重写。直接复用 `week04-qdrant/docker-compose.yml`（可在 Week 3 先建目录与 compose），索引与检索 API 从 Week 3 就针对 Qdrant。
 
 2. **Week 5 可与 Week 3–4 并行阅读**  
-   不必等 Week 5 才做 RAG。最低要求：Week 2 后读 [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) 前半；Week 5 集中补 Attention 实现与笔记。若做**选修微调**，需先理解「下一 Token 预测」。
+   不必等 Week 5 才做 RAG。最低要求：Week 2 后读 [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) 前半；Week 5 集中补 Attention 实现与笔记。Week 6 微调前需理解「下一 Token 预测」即可。
 
 3. **评估从 Week 3 开始线程化**  
    Week 3 建立 `evaluation_questions.json`（≥20 题）；Week 8 扩展到 ≥30 题并接入 **Ragas**（或先手写「来源是否命中」规则）。避免 Week 8 才第一次测质量。
 
-4. **Week 6 主线是 AI Data Pipeline；微调整为选修**  
-   必做周交付见 [Week 6](#week-6ai-data-pipeline)。时间充裕时在 W5 后或 W6 后加 3–6h，目录 `week06-extra-finetuning/`：精读 PEFT 文档 + `train_config.yaml` 与数据格式，用**已有 LoRA 权重**或云端 Notebook 跑 1 次短训练，产出「前后对比表 + 能解释 rank/alpha」写入 `RESULTS.md`。
+4. **Week 6 微调为选修加深**  
+   时间紧或无机：精读 PEFT 文档 + 完成 `train_config.yaml` 与数据格式，用**已有 LoRA 权重**或云端 Notebook 跑 1 次短训练；必做项改为「前后对比表 + 能解释 rank/alpha」。
 
 5. **Week 8 是 Week 3–4 的产品化，不是第二个 science project**  
     ingestion / retrieval 模块从周作业**迁移+加固**（增量、Hybrid、Rerank、拒答、API），不要另起一套目录结构。
@@ -197,7 +200,7 @@ flowchart LR
 | 仓库 | 链接 | 状态 | 在本计划中的用途 |
 |---|---|:---:|---|
 | microsoft/generative-ai-for-beginners | https://github.com/microsoft/generative-ai-for-beginners | 活跃 | **W1–2** Prompt、RAG 入门 |
-| microsoft/ai-agents-for-beginners | https://github.com/microsoft/ai-agents-for-beginners | 活跃 | **W9** Agent、Tool；**W11 选修** MCP（L11） |
+| microsoft/ai-agents-for-beginners | https://github.com/microsoft/ai-agents-for-beginners | 活跃 | **W9** Agent、Tool、Agentic RAG |
 | openai/openai-cookbook | https://github.com/openai/openai-cookbook | 活跃 | **W2** Embedding、向量检索示例 |
 
 #### 框架、工具与可观测（非完整课表，按周查阅）
@@ -207,9 +210,7 @@ flowchart LR
 | langchain-ai/langchain | https://github.com/langchain-ai/langchain | 活跃 | W3+ RAG 组件 |
 | langchain-ai/langgraph | https://github.com/langchain-ai/langgraph | 活跃 | W10、W12 Agent 图 |
 | qdrant/qdrant | https://github.com/qdrant/qdrant | 活跃 | W3–4、W8 向量库 |
-| hiyouga/LLaMA-Factory | https://github.com/hiyouga/LLaMA-Factory | 活跃 | W6 **选修**微调（`week06-extra-finetuning/`） |
-| microsoft/mcp-for-beginners | https://github.com/microsoft/mcp-for-beginners | 活跃 | **W11** MCP 概念与分课视频 |
-| dmatrix/mlflow-genai-tutorials | https://github.com/dmatrix/mlflow-genai-tutorials | 活跃 | W7–8 **选修** Tracing / GenAI 开发视频与 notebook |
+| hiyouga/LLaMA-Factory | https://github.com/hiyouga/LLaMA-Factory | 活跃 | W6 微调 |
 | ollama/ollama | https://github.com/ollama/ollama | 活跃 | W7 本地推理 |
 | vllm-project/vllm | https://github.com/vllm-project/vllm | 活跃 | W7 服务化（有 GPU） |
 | modelcontextprotocol/servers | https://github.com/modelcontextprotocol/servers | 活跃 | W11 官方 MCP Server 示例 |
@@ -223,7 +224,7 @@ flowchart LR
 |:---:|---|---|
 | W1–2 | MS GenAI + RAG 原型 | Zoomcamp Module 1（Agentic RAG 概念可先浏览，不抢先实现） |
 | W3–4 | LangChain + Qdrant | Zoomcamp Module 2 向量检索；rag-engineering Stage 1–3 任选一 notebook |
-| W5–7 | 原理选型 + AI Data Pipeline + 部署 | mlabonne **LLM Engineer** §1 Running LLMs、§6 Deploying；mlflow-genai-tutorials（Tracing） |
+| W5–7 | Transformer + LoRA + 部署 | mlabonne **LLM Engineer** §1 Running LLMs、§6 Deploying |
 | W8 | 企业 RAG + Ragas | agent-prep `lab-03-rag-eval`；Zoomcamp Module 4–5 评估与监控 |
 | W9–10 | Agent + LangGraph | agent-prep ReAct / 多 Agent 拓扑 lab；AI-Engineer-RoadMap Week 13–14 |
 | W11–12 | MCP + Copilot | Zoomcamp Module 3 编排（Kestra）**或** 用 Airflow 编排 ingestion（更贴 DE） |
@@ -235,7 +236,7 @@ flowchart LR
 | 向量库 | PGVector / Chroma / minsearch | **Qdrant** | 与 Hybrid、Payload 过滤、生产部署练习一致 |
 | 编排 | Kestra / Temporal | **代码 + 可选 Airflow** | 对齐现有数据平台技能 |
 | 第一课 | Agentic RAG 先行（Zoomcamp 2026） | **先 Prompt + 经典 RAG** | DE 先建立检索与评测再上 Agent，失败面更小 |
-| Capstone | 通用 RAG App / SWE-bench | **AI Data Platform Copilot** | 作品集与岗位叙事一致 |
+| Capstone | 通用 RAG App / SWE-bench | **Data Engineer Copilot** | 作品集与岗位叙事一致 |
 | 微调 | 16 周路线常占 2 周+ | **1 周选修加深** | 应用岗优先级低于 RAG / Agent / MCP |
 
 ### 选修周（时间充裕时插入，不改周编号）
@@ -249,7 +250,6 @@ flowchart LR
 | GraphRAG | rag-engineering NB 08；curriculum Week 2.5 | W8 前 | 多跳问答 5 题对比向量基线 |
 | Agentic RAG / CRAG | agent-prep Week 3.7 | W9 前 | 与 Week 8 单遍检索对比 faithfulness |
 | Agent 评估 + OTel | AI-Engineer-RoadMap W15；Zoomcamp Monitoring | W10 后 | 坏例集 + trace 截图写入 `RESULTS.md` |
-| LoRA / PEFT 短训 | LLaMA-Factory；[PEFT](https://huggingface.co/docs/peft/index) | W5 后或 W6 后 | `week06-extra-finetuning/` + `RESULTS.md` 前后对比 |
 
 ### 能力自检（招聘向六域，摘自 agent 课程 rubric 的简化版）
 
@@ -419,111 +419,108 @@ Document → Loader → Splitter → Chunks → Embeddings → Vector Store
 
 ---
 
-## Week 5：LLM 原理速通与 AI 数据选型
+## Week 5：Transformer 与 LLM 原理
 
-**本周投入：** 5–7h · **必做：** 原理理解 + 选型判断 · **不要求手写完整 Transformer**
-
-### 学习目标
-
-- 理解 Tokenization、Embedding、Attention、Decoder-only、上下文窗口与下一 Token 预测
-- 能解释 Prompt、RAG、Fine-tuning 各自解决什么问题
-- 能从数据新鲜度、可解释性、权限、成本和延迟角度做方案选择
-
-### 作业
-
-- 输出 `llm-for-data-engineers.md`：用数据工程语言解释 LLM 与 RAG
-- 输出 `solution-decision-matrix.md`：Prompt vs RAG vs Fine-tuning vs Tool Calling
-- 保留一个最小 Attention 示例为选修，不作为主线阻塞项
-
-### 验收标准
-
-- [ ] 能解释 Embedding 检索与模型生成的边界
-- [ ] 能说明何时优先修数据、修检索、修 Prompt，而不是微调模型
-- [ ] 能解释上下文窗口、幻觉与数据时效性的关系
-
----
-
-## Week 6：AI Data Pipeline
-
-**本周投入：** 14–16h · **岗位核心周**
+**本周投入：** 8–10h · **可与 W3–4 并行** · **必做：** Illustrated Transformer + Attention 代码
 
 ### 学习目标
 
-- 构建从源系统到向量索引的可增量、幂等、可观测数据链路
-- 掌握解析、规范化、去重、切片、Embedding、索引更新与删除传播
-- 将数据质量、版本、血缘和权限元数据带入 RAG
+- Tokenization、Embedding、Attention、Decoder-only、下一 Token 预测
+- 能向同事解释「RAG 检索」与「生成」在模型里分别对应什么
 
-### 推荐流程
+### 课程与章节
 
-```text
-Source → Extract → Parse → Normalize → Deduplicate → Chunk
-       → Quality Check → Embed → Index → Validate → Publish
-```
+- [LLM Course](https://github.com/mlabonne/llm-course)（README：Fundamentals、Architecture、Tokenization、Attention、Sampling）
+- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)
+- 选读：[LLMs from Scratch](https://github.com/rasbt/LLMs-from-scratch) · [nanoGPT](https://github.com/karpathy/nanoGPT)
 
 ### 作业
 
-- 数据源至少覆盖 Markdown/PDF/表结构样例，可选 Confluence/SharePoint 脱敏导出
-- 使用 Airflow 或 Databricks Workflows 编排 ingestion
-- 使用内容哈希实现幂等和增量处理
-- 支持新增、修改、删除三类 CDC 语义
-- 为每个 Chunk 保存 `document_id`、`version`、`source`、`updated_at`、`acl`、`checksum`
-- 建立质量规则：空内容、解析失败、重复率、Chunk 长度、Embedding 失败、索引数量对账
-- 将运行结果写入 `pipeline_metrics.json` 和 `RESULTS.md`
+1. 架构图：Tokenizer → Embedding → Attention → FFN → Residual → LayerNorm → 输出。
+2. ~1,000 字原理总结（`transformer-summary.md`）。
+3. NumPy 或 PyTorch 实现 Scaled Dot-Product Attention。
 
 ### 交付物
 
-- `week06-ai-data-pipeline/dags/` 或 `workflows/`
-- `week06-ai-data-pipeline/src/{extract,transform,chunk,embed,index}/`
-- `week06-ai-data-pipeline/tests/`
-- `week06-ai-data-pipeline/data-contract.md`
-- `week06-ai-data-pipeline/RESULTS.md`
+- `week05-transformer/transformer-architecture.md`
+- `week05-transformer/attention_demo.py`
+- `week05-transformer/transformer-summary.md`
 
 ### 验收标准
 
-- [ ] 重跑不产生重复数据
-- [ ] 文档修改后只处理受影响内容
-- [ ] 删除源文档后可删除对应向量
-- [ ] 原始文档数、有效文档数、Chunk 数和索引数可对账
-- [ ] 失败任务可重试，错误记录可定位
+- [ ] 能解释 Q/K/V、Self-Attention、Causal Mask
+- [ ] 能解释 GPT 下一 Token 预测
+- [ ] Attention 最小实现可运行
 
 ---
 
-## Week 7：Model Serving 与 Databricks AI
+## Week 6：SFT、LoRA 与 QLoRA
 
-**本周投入：** 12–15h · **主线：企业托管方案** · **选修：Ollama / vLLM**
+**本周投入：** 10–15h（**无 GPU：8h 理论+配置选修**）
 
 ### 学习目标
 
-- 理解模型 API、托管 Serving 与自建推理的选型边界
-- 熟悉 OpenAI-compatible Client、超时、重试、限流、Fallback 与成本记录
-- 将现有 Qdrant RAG 映射到 Databricks AI 能力
+- Pre-training、SFT、Instruction Tuning；LoRA / QLoRA 原理
+- 完成小规模 **SQL 生成**微调或等价实验记录
 
-### 学习范围
+### 课程与章节
 
-- Azure OpenAI / OpenAI-compatible API
-- Databricks Model Serving、Vector Search、Unity Catalog、MLflow Tracing / Evaluation
-- Ollama 本地开发；vLLM 作为有 GPU 时的选修部署
+- [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) · [Docs](https://llamafactory.readthedocs.io/)
+- [Hugging Face PEFT](https://huggingface.co/docs/peft/index)
 
 ### 作业
 
-- 封装统一模型网关：provider、model、timeout、retry、fallback、token/成本日志
-- 对至少两个可用端点执行压测，记录成功率、P50/P95、TTFT 或首响应时间
-- 编写 `databricks-ai-mapping.md`：Qdrant、FastAPI、Tracing、权限和 Serving 如何映射到 Databricks
-- 有 Databricks workspace 时，完成一个 Vector Search 或 Model Serving 最小实验；没有环境时完成架构与接口设计
+1. ≥100 条脱敏 SQL 指令数据（与 Week 1 SQL 助手同风格）。
+2. 记录模型、batch、lr、epoch、LoRA rank/alpha、耗时、显存。
+3. ≥20 题对比微调前后正确性与风格；`before_after_comparison.md`。
 
 ### 交付物
 
-- `week07-model-serving/model_gateway.py`
+- `week06-finetuning/sql_instruction_dataset.json`
+- `week06-finetuning/train_config.yaml`
+- `week06-finetuning/evaluation_questions.json`
+- `week06-finetuning/before_after_comparison.md`
+
+### 验收标准
+
+- [ ] 能解释 SFT、LoRA、QLoRA
+- [ ] 至少一次训练实验 **或** 完整复现配置+他人权重推理对比
+- [ ] 数据集无企业敏感信息
+
+---
+
+## Week 7：本地模型与推理服务部署
+
+**本周投入：** 10–12h · **必做：** Ollama + 压测 · **有 GPU：** vLLM OpenAI 兼容 API
+
+### 学习目标
+
+- Ollama 本地推理与流式；vLLM 服务化概念
+- TTFT、吞吐、成功率基础指标
+
+### 课程与章节
+
+- [Ollama](https://github.com/ollama/ollama) · [API](https://github.com/ollama/ollama/blob/main/docs/api.md)
+- [vLLM](https://docs.vllm.ai/) · [OpenAI-Compatible Server](https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html)
+
+### 作业
+
+1. Ollama 跑适合本机规模的模型，API + 流式。
+2. 有 GPU 部署 vLLM；无 GPU 在 `README` 写清 vLLM 步骤并用 Ollama 完成压测。
+3. ≥20 次请求：`benchmark-results.md` 含 TTFT、总时延、tokens/s、成功率。
+
+### 交付物
+
+- `week07-model-serving/ollama_client.py`
+- `week07-model-serving/openai_compatible_client.py`
 - `week07-model-serving/benchmark.py`
 - `week07-model-serving/benchmark-results.md`
-- `week07-model-serving/databricks-ai-mapping.md`
 
 ### 验收标准
 
-- [ ] 模型供应商可通过配置切换
-- [ ] 有超时、重试、限流和 fallback 策略
-- [ ] 有可复现性能数字与调用日志
-- [ ] 能解释托管服务与自建推理在安全、成本、维护和性能上的权衡
+- [ ] API 调通本地模型与流式
+- [ ] 能说明量化 / GGUF / OpenAI 兼容端点
+- [ ] 有可复现压测数字
 
 ---
 
@@ -573,9 +570,7 @@ Source → Extract → Parse → Normalize → Deduplicate → Chunk
 
 ### 课程与章节
 
-- [AI Agents for Beginners](https://microsoft.github.io/ai-agents-for-beginners/) · [GitHub 课表与分课视频](https://github.com/microsoft/ai-agents-for-beginners) · **必做** 01–07（Setup 至 Planning）
-- **说明：** 官方示例偏 Microsoft Agent Framework / Foundry；本仓库作业按 **LangGraph + FastAPI** 实现，视频学概念与模式即可。
-- **W11 前选修：** [11 - Agentic Protocols (MCP)](https://github.com/microsoft/ai-agents-for-beginners/tree/main/11-agentic-protocols)（与 Week 11 衔接）
+- [AI Agents for Beginners](https://microsoft.github.io/ai-agents-for-beginners/) · 01–07（Setup 至 Planning）
 
 ### 作业
 
@@ -627,60 +622,58 @@ Source → Extract → Parse → Normalize → Deduplicate → Chunk
 
 ---
 
-## Week 11：MCP、Metadata 与 Data Lineage
+## Week 11：MCP 与 AI 数据治理
 
-**本周投入：** 14–16h · **岗位核心周**
+**本周投入：** 12–14h
 
 ### 学习目标
 
-- 理解 MCP Host / Client / Server，以及 Tool、Resource 与 Prompt 的边界
-- 将数据目录、Schema、血缘、Owner、质量状态和 Job 状态暴露为安全的只读能力
-- 构建可审计的 **Data Catalog MCP**
+- MCP Host / Client / Server；Tool vs Resource
+- 自定义 **Data Platform MCP**（表、Schema、血缘、DAG/Job 状态）
+- 理解 AI 数据治理对象与控制点：Knowledge、Chunk、Embedding、Vector Index、Prompt、Evaluation Dataset、Agent、Tool
 
 ### 课程与章节
 
-- [MCP for Beginners](https://github.com/microsoft/mcp-for-beginners)（分课视频见各章 README；全集 [YouTube](https://www.youtube.com/watch?v=VfZlglOWWZw)）
-- [AI Agents for Beginners · 11 - Agentic Protocols (MCP)](https://github.com/microsoft/ai-agents-for-beginners/tree/main/11-agentic-protocols) · [Video](https://youtu.be/X-Dh9R3Opn8)
-- [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) 官方 Server 示例
+- [MCP 文档](https://modelcontextprotocol.io/) · [Architecture](https://modelcontextprotocol.io/docs/learn/architecture) · [Build Server](https://modelcontextprotocol.io/docs/develop/build-server) · [Official Servers](https://github.com/modelcontextprotocol/servers)
 
 ### 作业
 
-- 跑通 Filesystem MCP 或 GitHub MCP，并限制访问范围
-- 自研 Data Catalog MCP，至少提供：
-  - `search_tables`
-  - `get_table_schema`
-  - `get_table_lineage`
-  - `get_data_quality_status`
-  - `get_job_run_status`
-- 优先对接 Unity Catalog / Databricks Jobs；无环境时使用结构化 mock，但接口契约保持真实
-- 加入 allowlist、只读控制、超时、分页、脱敏、审计日志和错误码
-- 编写 `metadata-contract.md` 与 `security-design.md`
+1. Filesystem MCP（限制根目录）+ GitHub MCP（仓库/Issue/PR）。
+2. 自研 MCP：`表搜索`、`Schema`、`血缘`、`DAG/运行状态`（可读 mock 或只读 API）。
+3. `security-design.md`：允许名单、只读、超时、审计、凭据走环境变量。
+4. 建立 `governance-inventory.yaml`，登记知识源、Owner、分类、敏感级别、保留期、Embedding 模型、索引和允许访问的 Agent。
+5. 编写 `ai-data-governance.md`，覆盖来源可信度、Freshness、Chunk/Embedding 版本、ACL、删除传播、评测集版本和 Agent 工具权限。
+6. 实现一个治理检查脚本：发现过期文档、孤儿 Chunk、索引数量不一致、缺失 Owner、未授权 Tool 或待删除向量。
 
 ### 交付物
 
-- `week11-mcp-data-catalog/server.py`
-- `week11-mcp-data-catalog/client.py`
-- `week11-mcp-data-catalog/tools/`
-- `week11-mcp-data-catalog/resources/`
-- `week11-mcp-data-catalog/metadata-contract.md`
-- `week11-mcp-data-catalog/security-design.md`
+- `week11-mcp/mcp_server.py` · `mcp_client.py` · `tools/` · `resources/`
+- `week11-mcp/security-design.md`
+- `week11-mcp/ai-data-governance.md`
+- `week11-mcp/governance-inventory.yaml`
+- `week11-mcp/governance-check.py`
+- `week11-mcp/governance-report.md`
 
 ### 验收标准
 
-- [ ] 跑通 1 个官方 Server + 1 个自研 Data Catalog Server
-- [ ] 能通过自然语言找到表、字段、上游/下游与作业状态
-- [ ] 所有工具默认只读，调用均有审计记录
-- [ ] 敏感字段与未授权资产不会进入模型上下文
+- [ ] 说清 Tool 与 Resource
+- [ ] 跑通 1 个官方 Server + 1 个自研 Server
+- [ ] 范围限制与密钥不入库
+- [ ] 每个知识源都有 Owner、分类、更新时间、权限和保留策略
+- [ ] Chunk 可追溯至源文档和版本，Embedding 可追溯至模型及版本
+- [ ] 源文档删除或撤权后，相关 Chunk 与向量可同步删除或失效
+- [ ] 评测集、Prompt、模型、索引和 Agent 配置均可版本化
+- [ ] 治理检查脚本可输出异常清单，并至少覆盖 5 类治理规则
 
 ---
 
-## Week 12：毕业项目 AI Data Platform Copilot
+## Week 12：毕业项目 Data Engineer Copilot
 
 **本周投入：** 18–24h · **整合，避免新造轮子**
 
 ### 项目目标
 
-把 Week 6 数据管道、Week 8 RAG API、Week 10 工作流和 Week 11 Data Catalog MCP **合并**为可 Compose 启动的 AI Data Platform Copilot，并补齐数据质量、可观测性、评估与测试。
+把 Week 8 API、Week 10 图、Week 11 MCP **合并**为可 Compose 启动的 Copilot，并补齐可观测性与测试。
 
 ### 推荐架构
 
@@ -710,18 +703,61 @@ Qdrant (Week 4)
 | Airflow | DAG/Schedule/Retry/Callback；检查 catchup/并发 |
 | 工作流 | 意图路由 → 生成 → 审查 → 安全 → **人工批准** → 响应 |
 | 可观测性 | Request ID、路由、工具调用、检索片段、Token、延迟、错误状态 |
+| AI 数据治理 | 来源/Owner、版本、Freshness、ACL、保留期、删除传播、评测集与 Agent/Tool Registry |
 
 ### 推荐技术栈
 
-Python · FastAPI · Airflow 或 Databricks Workflows · Spark/Delta · LangGraph · LangChain 或 LlamaIndex · Qdrant/Databricks Vector Search · OpenAI/Azure OpenAI/Model Serving · MLflow · MCP SDK · Docker Compose · pytest · Ruff
+Python · FastAPI · LangGraph · LangChain 或 LlamaIndex · Qdrant · OpenAI/Ollama · MCP SDK · Docker Compose · pytest · Ruff
 
 ### 建议仓库结构
 
 ```text
 data-engineer-copilot/
-├── README.md · .env.example · docker-compose.yml · pyproject.toml
-├── app/{api,agent,rag,tools,mcp,prompts,ui}
-├── ingestion/ · evaluation/ · tests/ · scripts/ · docs/
+├── README.md
+├── .env.example
+├── docker-compose.yml
+├── pyproject.toml
+├── app/
+│   ├── api/
+│   ├── agent/
+│   ├── rag/
+│   ├── tools/
+│   ├── mcp/
+│   ├── prompts/
+│   ├── governance/
+│   │   ├── registry.py
+│   │   ├── policies.py
+│   │   ├── freshness.py
+│   │   ├── deletion.py
+│   │   └── audit.py
+│   └── ui/
+├── ingestion/
+├── metadata/
+│   ├── knowledge_catalog.yaml
+│   ├── embedding_registry.yaml
+│   ├── vector_index_registry.yaml
+│   ├── prompt_registry.yaml
+│   └── agent_tool_registry.yaml
+├── evaluation/
+│   ├── datasets/
+│   ├── baselines/
+│   └── reports/
+├── policies/
+│   ├── access-control.yaml
+│   ├── retention.yaml
+│   └── classification.yaml
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   ├── regression/
+│   └── governance/
+├── scripts/
+└── docs/
+    ├── architecture.md
+    ├── data-contract.md
+    ├── ai-data-governance.md
+    ├── security-design.md
+    └── operations-runbook.md
 ```
 
 ### 最终验收标准
@@ -731,6 +767,10 @@ data-engineer-copilot/
 - [ ] Agent 路由与工具失败可处理
 - [ ] 高风险需人工批准；SQL/文件默认只读或受限
 - [ ] 环境变量配置；含测试、架构说明、部署步骤
+- [ ] 知识源、Chunk、Embedding、向量索引、Prompt、评测集、Agent 和 Tool 均有 Owner 与版本记录
+- [ ] ACL 在检索或工具层执行，未授权内容不进入模型上下文
+- [ ] 删除源数据后可验证文档、Chunk、向量和缓存的删除传播
+- [ ] 可生成治理报告：过期知识、孤儿 Chunk、版本漂移、权限异常、索引对账和评测退化
 
 ---
 
@@ -742,7 +782,8 @@ data-engineer-copilot/
 | `app/api` + Compose | 7, 8 | 模型端点环境变量化 |
 | `app/agent/graph` | 9, 10 | 审批节点与 Week 10 一致 |
 | `app/mcp/*` | 11 | 安全设计文档进 `docs/` |
-| SQL 风格与评测 | 1, 6 | Week 1 Prompt 模板 + Week 6 数据契约；微调仅 `week06-extra-finetuning/` 选修 |
+| `app/governance/*` + `metadata/*` + `policies/*` | 11, 12 | Registry、ACL、Freshness、Retention、删除传播与治理报告 |
+| SQL 风格与评测 | 1, 6 | Prompt + 可选 LoRA |
 | `evaluation/*` | 3, 8 | 问题集合并去重 |
 | 压测与 SLO 参考 | 7 | 写入 `docs/performance.md` |
 
@@ -750,28 +791,33 @@ data-engineer-copilot/
 
 ## 学习优先级与时间分配
 
-时间不够时，优先保留 AI Data Engineer 岗位最能形成作品证据的模块。
+时间不够时按此砍 **选做**，保留 **必做** 与阶段里程碑（Week 8、Week 12）。
 
 | 方向 | 建议占比 | 优先级 |
 |---|---:|---|
-| AI Data Pipeline、数据质量与增量同步 | 25% | 最高 |
-| 企业级 RAG、检索与向量数据运维 | 25% | 最高 |
-| Evaluation、Regression 与 Observability | 15% | 最高 |
-| Databricks AI、Unity Catalog 与 Model Serving | 15% | 高 |
-| Agent 与 LangGraph | 10% | 高 |
-| MCP、Metadata 与 Lineage | 7% | 高 |
-| LLM 原理与 Prompt | 3% | 基础 |
-| LoRA / QLoRA | 选修 | 低 |
+| 企业级 RAG + 评估 | 35% | 最高 |
+| Agent 与 LangGraph | 25% | 最高 |
+| MCP 与工具集成 | 12% | 高 |
+| AI 数据治理与安全 | 13% | 最高 |
+| 模型部署 | 10% | 中高 |
+| Prompt Engineering | 5% | 中 |
+| Transformer 原理 | 5% | 中 |
+| LoRA 微调 | 5% | 中低（可选修） |
 
-**固定主栈：** Python + FastAPI + Airflow/Databricks Workflows + Spark/Delta + LangChain/LangGraph + Qdrant/Databricks Vector Search + MLflow + MCP + Docker Compose
+**固定主栈：**
 
-#### 常见误区
-- 把 AI Data Engineer 学成算法工程师 → 原理够用即可，主攻数据管道、质量、检索和平台化
-- 只做一次性文档导入 → 必须支持幂等、增量、删除传播、版本和对账
-- 只看回答效果 → 同时记录召回、忠实度、延迟、Token/成本和失败类型
-- 每周换一套向量库 → 本地固定 Qdrant，企业平台再映射 Databricks Vector Search
-- Agent 无护栏直连生产 → 默认只读、最小权限、审批、审计、超时和 allowlist
-- 毕业周重新造轮子 → Week 6、8、10、11 的模块直接汇入最终项目
+```text
+Python + FastAPI + LangChain + LangGraph + Qdrant + OpenAI/Ollama + MCP + Docker Compose
+```
+
+### 常见误区
+
+- 每周换一套向量库实现 → **从 Week 3 起锁定 Qdrant**
+- 只做 Demo 不做评测集 → **Week 3 起维护 `evaluation_questions.json`**
+- 毕业周重写 RAG → **在 Week 8 目录上演进**
+- Agent 无护栏直接连生产库 → **只读 + 审批 + 审计**
+
+---
 
 ## 每周复盘模板
 
@@ -839,38 +885,136 @@ data-engineer-copilot/
 
 ---
 
-## 视频资源（按周）
+## AI 数据治理
 
-链出自 [对标仓库清单](#对标仓库清单维护表) 中课表的 README；**分课短视频**以各模块 `lessons/` 或课表内 Video 列为准（[LLM Zoomcamp FAQ](https://datatalks.club/faq/llm-zoomcamp.html) 亦建议优先跟 GitHub 模块导航）。
+AI 数据治理是在传统数据治理基础上，继续治理进入模型上下文、向量索引和 Agent 工作流的知识与控制信息。重点不是增加文档，而是确保 AI 使用的数据**有来源、有 Owner、有版本、有权限、可评估、可删除、可审计**。
 
-### Playlist 与总览
+### 治理范围
 
-| 用途 | 链接 | GitHub 出处 |
-|---|---|---|
-| LLM Zoomcamp 模块预录主列表 | https://www.youtube.com/playlist?list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv | [llm-zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp) · [resources.md](https://github.com/DataTalksClub/docs/blob/main/courses/llm-zoomcamp/resources.md) |
-| LLM Zoomcamp 2026 cohort 录播 | https://www.youtube.com/playlist?list=PL3MmuxUbc_hJAmLLf2x1LSKRKbZwKXoHd | 同上 |
-| DataTalks.Club 频道 | https://www.youtube.com/@DataTalksClub | 同上 |
-| Generative AI for Beginners 全集（可选） | https://www.youtube.com/watch?v=k7HaeJs-N-o | 单课以 [generative-ai-for-beginners](https://github.com/microsoft/generative-ai-for-beginners) 课表为准 |
-| MCP for Beginners 全集（11 课） | https://www.youtube.com/watch?v=VfZlglOWWZw | [mcp-for-beginners](https://github.com/microsoft/mcp-for-beginners) |
+| 领域 | 传统治理重点 | AI 场景新增重点 | 必备元数据或控制 |
+|---|---|---|---|
+| 数据标准 | 表、字段、指标、编码 | Prompt 输入输出、Chunk Schema、Tool Schema、引用格式 | 标准名、Schema 版本、业务定义、兼容性 |
+| 数据质量 | 准确、完整、一致、唯一、及时、有效 | 可解析率、重复率、Chunk 质量、检索命中、忠实度、拒答质量 | 规则、阈值、Owner、质量结果、异常原因 |
+| 元数据与血缘 | 表/字段、Owner、上下游 | Source → Document → Chunk → Embedding → Index → Retrieval → Answer | `source_id`、`chunk_id`、模型/索引版本、Trace ID |
+| 主数据与语义 | 实体唯一、维度一致、指标口径 | 实体别名、术语、知识冲突、语义层和 Text-to-SQL 口径 | Canonical ID、术语表、指标定义、可信来源优先级 |
+| 安全与隐私 | RBAC/ABAC、脱敏、审计 | 检索权限继承、上下文泄露、Prompt Injection、Tool 越权 | ACL、分类标签、脱敏策略、Tool Allowlist、审计事件 |
+| 生命周期 | 创建、使用、归档、删除 | 文档更新、重新切片、重算 Embedding、索引切换、缓存失效、删除传播 | 状态、版本、保留期、删除标记、传播结果 |
+| 评估治理 | 报表核对、数据验收 | Ground Truth、Golden Dataset、回归门禁、模型/Prompt/Retriever 对比 | 数据集版本、Baseline、指标、阈值、发布结论 |
+| Agent 治理 | 应用和服务治理 | Agent、Prompt、Model、Tool、MCP Server 的注册、权限和风险等级 | Owner、版本、用途、工具范围、审批、SLA/SLO |
+| 成本与可观测 | 作业成本、SLA、日志 | Token、Embedding、向量存储、检索和 Agent Step 成本；端到端 Trace | Request/Trace ID、Token、延迟、错误、成本标签 |
 
-### 按周推荐
+### 核心治理对象
 
-| 周 | 主题 | 推荐视频 | GitHub 出处 |
-|---:|---|---|---|
-| 1 | Prompt / GenAI | 课 01–05 README 内 Video（如 L1: https://aka.ms/gen-ai-lesson-1-gh） | [generative-ai-for-beginners](https://github.com/microsoft/generative-ai-for-beginners) |
-| 2 | Embedding / RAG | 课 08、15 视频链接 | 同上 |
-| 3 | RAG 工程化 | [Build Your First RAG Application](https://www.youtube.com/watch?v=KSItlTAsMsk)（选修全长） | [01-agentic-rag/README](https://github.com/DataTalksClub/llm-zoomcamp/blob/main/01-agentic-rag/README.md) |
-| 4 | 向量 / Hybrid 概念 | [Vector Databases… Hybrid Retrieval](https://www.youtube.com/watch?v=BC3NsRUNEIg) | [02-vector-search/README](https://github.com/DataTalksClub/llm-zoomcamp/blob/main/02-vector-search/README.md) |
-| 5 | 原理速通 | GenAI L01–02 视频；图文 [Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) | generative-ai-for-beginners |
-| 6 | AI Data Pipeline | 无单一标配课；可选 [Data Ingestion 分课](https://github.com/DataTalksClub/llm-zoomcamp/blob/main/01-agentic-rag/09-data-ingestion.md) | llm-zoomcamp |
-| 7 | Serving / MLflow | [Mastering GenAI with MLflow](https://www.youtube.com/watch?v=2XAa6zuyU6w) · [Introduction to Tracing](https://www.youtube.com/watch?v=npiKufwkyoo) · [Manual Tracing](https://www.youtube.com/watch?v=SND52zOVQRs) | [mlflow-genai-tutorials](https://github.com/dmatrix/mlflow-genai-tutorials) |
-| 8 | 评估与监控 | [RAG and Agents Evaluation…](https://www.youtube.com/watch?v=WUGtDveIe7A) · [Monitoring LLM Applications…](https://www.youtube.com/watch?v=ImY5-Q97sRw) | [resources.md](https://github.com/DataTalksClub/docs/blob/main/courses/llm-zoomcamp/resources.md) |
-| 9 | Agent / Tool | [From RAG to AI Agents…](https://www.youtube.com/watch?v=RAqLWJsLZb4) · MS Agents L01–07 课表 YouTube 列（如 https://youtu.be/3zgm60bXmQk） | llm-zoomcamp · [ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) |
-| 10 | LangGraph | [Kestra 编排 playlist](https://youtube.com/playlist?list=PLEK3H8YwZn1oc6ReY4el9jT-mLlw-hs3r)（概念对照）；实现以 LangGraph 文档 + 作业为准 | resources.md |
-| 11 | MCP | [MCP for Beginners 全集](https://www.youtube.com/watch?v=VfZlglOWWZw) · [MS Agents L11 MCP](https://youtu.be/X-Dh9R3Opn8) | mcp-for-beginners · ai-agents-for-beginners |
-| 12 | Capstone | 复用 W8–W11 视频；毕业 rubric 见 [project.md](https://github.com/DataTalksClub/llm-zoomcamp/blob/main/project.md) | llm-zoomcamp |
+#### 1. Knowledge Source
 
-> Zoomcamp Module 2 视频使用 PGVector/minsearch 演示；本计划实现统一 **Qdrant**（见 [与 2026 行业路线的差异](#与-2026-行业路线的差异刻意选择)）。
+每个知识源至少记录：
+
+- `source_id`、名称、类型与系统地址
+- 业务 Owner、技术 Owner、可信等级
+- 数据分类、敏感级别、允许使用场景
+- 更新时间、Freshness SLA、保留期
+- 抽取方式、同步频率、最后成功运行
+
+#### 2. Document 与 Chunk
+
+- Document 和 Chunk 使用稳定 ID，避免重跑产生重复数据。
+- Chunk 必须保留源文档、页码/段落、版本、Checksum、ACL 和有效状态。
+- 重新切片时生成新版本，旧版本先停止检索，再按策略清理。
+- 监控孤儿 Chunk、空 Chunk、超长/过短 Chunk、重复 Chunk 和权限缺失。
+
+#### 3. Embedding 与 Vector Index
+
+- 登记 Embedding Provider、Model、Version、Dimension 和生成时间。
+- 登记 Vector Collection/Index、距离度量、Filter 字段、Schema 和索引版本。
+- 更换 Embedding 模型时使用新索引版本重建，完成评估后再切换 Alias。
+- 源数据撤权或删除时，同步处理 Chunk、Vector、检索缓存和评估样例。
+
+#### 4. Prompt、Evaluation Dataset 与 Baseline
+
+- Prompt 使用 Registry 管理版本、Owner、用途、输入输出 Schema 和发布日期。
+- Golden Dataset 记录问题、答案要点、预期来源、适用权限和失败类别。
+- 每次更换模型、Embedding、Chunk、Retriever、Reranker 或 Prompt，都运行相同回归集。
+- 报告同时保留质量、延迟、Token/成本、失败案例和发布结论。
+
+#### 5. Agent、Tool 与 MCP
+
+- 为每个 Agent 登记 Owner、模型、Prompt、Tools、数据范围、风险等级和审批要求。
+- Tool 与 MCP Server 默认只读、最小权限、显式 Allowlist、参数校验、超时和审计。
+- 写操作、外部发送、生产任务执行和敏感查询必须经过人工审批或等价控制。
+- Tool 返回内容在进入模型上下文前进行权限检查、分类过滤和必要脱敏。
+
+### AI 数据治理控制点
+
+```text
+数据源
+  ↓  来源登记、分类、Owner、保留期
+抽取与解析
+  ↓  内容校验、PII 检测、Checksum、失败隔离
+Chunk
+  ↓  稳定 ID、版本、ACL、质量规则
+Embedding
+  ↓  模型版本、维度、成本、重算状态
+Vector Index
+  ↓  Schema、Filter、Alias、备份、删除传播
+Retrieval / Rerank
+  ↓  权限过滤、Top-K、引用、检索日志
+LLM / Agent / Tool
+  ↓  Prompt 版本、模型版本、工具权限、审批、审计
+Answer
+  ↓  来源、Trace、质量评估、反馈与问题闭环
+```
+
+### 建议治理清单
+
+```yaml
+knowledge_source:
+  source_id: airflow-runbook
+  owner: data-platform-team
+  classification: internal
+  freshness_sla_hours: 24
+  retention_days: 365
+  allowed_agents:
+    - data-platform-copilot
+
+index:
+  collection: platform-knowledge-v2
+  embedding_model: text-embedding-model
+  embedding_version: v1
+  dimension: 1536
+  chunk_policy_version: chunk-v3
+  acl_filter_required: true
+
+release:
+  prompt_version: rag-system-v5
+  evaluation_dataset: platform-rag-golden-v3
+  baseline: release-2026-10
+  approval_required: true
+```
+
+以上值仅作为仓库中的结构示例，实际项目应使用真实配置和组织批准的分类、保留及访问规则。
+
+### 治理指标
+
+至少持续记录以下指标：
+
+- **来源治理：** Owner 覆盖率、分类覆盖率、Freshness SLA 达标率
+- **管道质量：** 解析成功率、重复率、异常 Chunk 数、索引对账差异
+- **检索质量：** Recall@K、来源命中率、无答案识别率、权限过滤通过率
+- **生成质量：** 忠实度、答案相关性、引用完整性、人工复核结果
+- **生命周期：** 更新传播延迟、删除传播成功率、孤儿向量数
+- **Agent 安全：** 未授权调用数、审批命中数、Tool 失败率、敏感信息拦截数
+- **运行效率：** P50/P95 延迟、Token 用量、Embedding 成本、单请求成本
+
+### 治理验收标准
+
+- [ ] 100% 生产知识源具有业务 Owner、技术 Owner、分类、权限和保留策略
+- [ ] 100% 可检索 Chunk 可追溯到源文档、版本和 ACL
+- [ ] Embedding、Vector Index、Prompt、Evaluation Dataset、Agent 和 Tool 均有版本登记
+- [ ] 未授权数据在检索或工具层被阻止，而不是仅靠 System Prompt 提醒
+- [ ] 源文档修改、撤权和删除能够传播至 Chunk、Vector、缓存与相关索引
+- [ ] 至少 30 题 Golden Dataset 可自动回归，并保留 Baseline 对比报告
+- [ ] 所有 Agent Tool 调用包含 Trace ID、用户/服务主体、参数摘要、结果和错误状态
+- [ ] 每次发布可回答：改了什么、谁批准、用了哪些数据和模型、质量是否退化、如何回滚
 
 ---
 
@@ -879,33 +1023,24 @@ data-engineer-copilot/
 ```text
 Senior Data Engineer
         ↓
-AI Data Engineer（AI 数据管道、知识加工、向量索引、质量与评估）
+AI Application Engineer（应用与 API）
         ↓
-Senior AI Data Engineer（平台化、治理、权限、可观测与成本）
+RAG Engineer（检索、评估、知识库运维）
         ↓
-AI Data Platform Engineer / AI Platform Engineer
+AI Agent Engineer（工作流、工具、安全）
+        ↓
+Data Platform AI Engineer（MCP + 平台元数据 + 生产规范）
 ```
 
 **优先落地场景（与 12 周作业对齐）：**
-- Knowledge Ingestion Pipeline：多源采集、解析、去重、切片、Embedding、索引和删除传播（Week 6）
-- Data Platform Knowledge Copilot：Databricks、Spark、Airflow 与 Runbook 问答（Week 8 / 12）
-- RAG Evaluation Pipeline：评测集、回归测试、Tracing、质量阈值与发布门禁（Week 3 / 8 / 12）
-- Data Catalog Agent：表发现、Schema、Owner、质量、血缘与 Job 状态（Week 11 / 12）
-- SQL / PySpark Review Agent：生成、审查、安全检查与人工审批（Week 9–10）
-- Databricks AI Integration：Vector Search、Model Serving、Unity Catalog、MLflow（Week 7–8）
-- MCP 数据平台工具层：将元数据与运维能力安全暴露给 Agent（Week 11）
-- 生产可观测：请求链路、检索片段、模型调用、Token、延迟、错误与成本（Week 7–12）
 
-### 求职作品集验收清单
-
-完成后，README 首页应直接展示以下证据：
-- 一张端到端架构图
-- 一条可重跑的增量 ingestion 流水线
-- 一份数据契约和权限设计
-- 一组不少于 30 题的评测集与回归结果
-- Hybrid/Rerank 前后效果对比
-- P50/P95 延迟、成功率、Token/成本记录
-- Data Catalog MCP 工具清单和审计样例
-- 一段 3–5 分钟演示：提问 → 检索 → 查表/血缘 → 审批 → 回答
-- Docker Compose 启动说明、测试命令和已知限制
-
+1. Data Platform Knowledge Copilot（Week 8 / 12）
+2. Airflow Operations Assistant（Week 3 RAG 语料）
+3. Databricks / Spark 文档助手（Week 8 知识库）
+4. SQL 生成与审查 Agent（Week 1 + 6 + 10）
+5. PySpark Code Review Agent（Week 10）
+6. 数据质量 / 故障 Runbook Agent（Week 2–3 语料）
+7. 元数据与血缘 MCP（Week 11）
+8. GitHub 代码检索（Week 11 MCP）
+9. 可观测性：请求链路日志（Week 12）
+10. 评估回归：发版前跑评测集（Week 3 起）
